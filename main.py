@@ -164,18 +164,17 @@ async def Logs():
 
 @app.post("/ReciveInput")
 def Recive(text: str):
-    is_exists = False
+    # is_exists = False
     data = create(text)
-    if connection.db.List.find(
-        {'text': data['text']}
-    ).count() > 0:
-        is_exists = True
-        #print("Api Already Exists")
-        return {"message": "The Name Api Already Exists"}
-    elif is_exists == False:
-        connection.db.List.insert_one(data)
-
-        return {"message": "Success Created", "text": data['text']}
+    # if connection.db.List.find(
+    #     {'text': data['text']}
+    # ).count() > 0:
+    #     is_exists = True
+    #     #print("Api Already Exists")
+    #     return {"message": "The Name Api Already Exists"}
+    # elif is_exists == False:
+    connection.db.List.insert_one(data)
+    return {"text": data['text']}
 
 
 if __name__ == '__main__':
