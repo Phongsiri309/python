@@ -35,7 +35,7 @@ import hashlib
 
 class InputReciver(Model):
     obj_id = ObjectId
-    text = StringType(required=False)
+    text = StringType()
 
 
 newRecive = InputReciver()
