@@ -175,7 +175,7 @@ def Recive(text: str):
     elif is_exists == False:
         connection.db.List.insert_one(data)
 
-        return {"message": "Success Created", "Input": data['text']}
+        return {"message": "Success Created", "text": data['text']}
 
 
 if __name__ == '__main__':
