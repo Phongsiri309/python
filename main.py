@@ -33,6 +33,20 @@ class NewApiList(Model):
     param1 = StringType(required=True)
 
 
+class InputReciver(Model):
+    obj_id = ObjectId
+    text = StringType(required=True)
+
+
+newRecive = NewTextlist()
+
+
+def create(text):
+    newRecive.obj_id = ObjectId()
+    newRecive.text = text
+    return dict(newRecive)
+
+
 # An instance of class NewApiList
 newList = NewApiList()
 
