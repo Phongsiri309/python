@@ -83,6 +83,16 @@ async def main():
     return 'Hello World'
 
 
+@app.get('/Textlist')
+async def Textlist():
+    jsonout = {}
+    for t in connection.db.List.find():
+        id = '{0}'.format(t['_id'])
+        dict = {'Input': t.get('Input')}
+        jsonout[id] = dict
+    return jsonout
+
+
 @app.get("/ApiList")
 async def ApiList():
     # create dict for stored data in collections
