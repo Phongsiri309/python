@@ -88,7 +88,7 @@ async def Textlist():
     jsonout = {}
     for t in connection.db.List.find():
         id = '{0}'.format(t['_id'])
-        dict = {'Input': t.get('Input')}
+        dict = {'text': t.get('text')}
         jsonout[id] = dict
     return jsonout
 
