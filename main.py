@@ -25,12 +25,12 @@ import date_format
 import hashlib
 
 
-class NewApiList(Model):
-    obj_id = ObjectId()
-    name_eng = StringType(required=True)
-    name_th = StringType(required=True)
-    api_url = StringType(required=True)
-    param1 = StringType(required=True)
+# class NewApiList(Model):
+#     obj_id = ObjectId()
+#     name_eng = StringType(required=True)
+#     name_th = StringType(required=True)
+#     api_url = StringType(required=True)
+#     param1 = StringType(required=True)
 
 
 class InputReciver(Model):
@@ -38,7 +38,7 @@ class InputReciver(Model):
     text = StringType(required=True)
 
 
-newRecive = NewTextlist()
+newRecive = InputReciver()
 
 
 def create(text):
@@ -48,18 +48,18 @@ def create(text):
 
 
 # An instance of class NewApiList
-newList = NewApiList()
+# newList = NewApiList()
 
 # funtion to create and assign values to the instanse of class User created
 
 
-def create(name_eng, name_th, api_url, param1):
-    newList.obj_id = ObjectId()
-    newList.name_eng = name_eng
-    newList.name_th = name_th
-    newList.api_url = api_url
-    newList.param1 = param1
-    return dict(newList)
+# def create(name_eng, name_th, api_url, param1):
+#     newList.obj_id = ObjectId()
+#     newList.name_eng = name_eng
+#     newList.name_th = name_th
+#     newList.api_url = api_url
+#     newList.param1 = param1
+#     return dict(newList)
 
 
 app = FastAPI()
@@ -110,46 +110,46 @@ async def Logs():
 # Signup endpoint with the POST method
 
 
-@app.post("/ApiSignup")
-def Signup(name_eng: str, name_th: str, api_url: str, param1: str):
-    is_exists = False
-    data = create(name_eng, name_th, api_url, param1)
-    dict(data)
-    if connection.db.List.find(
-        {'name_eng': data['name_eng']}
-    ).count() > 0:
-        is_exists = True
-        #print("Api Already Exists")
-        return {"message": "The Name Api Already Exists"}
-    elif is_exists == False:
-        epoch = time.time()
-        data['time'] = epoch
-        data['id'] = hashlib.md5(b'epoch').hexdigest()
-        connection.db.List.insert_one(data)
-        data['Operation'] = 'Create'
-        connection.db.Logs.insert_one(data)
-        return {"message": "Success Created", data['Operation']: 'Create', "name_eng": data['name_eng'], "name_th": data['name_th'], "api_url": data['api_url'], "param1": data['param1'], "datetime": data['time']}
+# @app.post("/ApiSignup")
+# def Signup(name_eng: str, name_th: str, api_url: str, param1: str):
+#     is_exists = False
+#     data = create(name_eng, name_th, api_url, param1)
+#     dict(data)
+#     if connection.db.List.find(
+#         {'name_eng': data['name_eng']}
+#     ).count() > 0:
+#         is_exists = True
+#         #print("Api Already Exists")
+#         return {"message": "The Name Api Already Exists"}
+#     elif is_exists == False:
+#         epoch = time.time()
+#         data['time'] = epoch
+#         data['id'] = hashlib.md5(b'epoch').hexdigest()
+#         connection.db.List.insert_one(data)
+#         data['Operation'] = 'Create'
+#         connection.db.Logs.insert_one(data)
+#         return {"message": "Success Created", data['Operation']: 'Create', "name_eng": data['name_eng'], "name_th": data['name_th'], "api_url": data['api_url'], "param1": data['param1'], "datetime": data['time']}
 
 
-@app.post("/Update")
-def Update(id: str, name_eng: str, name_th: str, api_url: str, param1: str):
-    jsonout = {}
-    for update in connection.db.List.find({'_id': ObjectId(id)}):
-        #find_id = '{0}'.format(update['_id'])
-        if update:
-            data = create(name_eng, name_th, api_url, param1)
-            connection.db.List.update_one({'_id': ObjectId(id)}, {'$set': {
-                                          update['name_eng']: name_eng, update['name_th']: name_eng}, update['api_url']: api_url, update['param1']: param1})
-            data['time'] = datetime.now() + timedelta(hours=7)
-            data['Operation'] = 'Update'
-            data['_id'] = id
-            connection.db.Logs.insert_one(data)
-            dict = {'Operation': data['Operation'], 'name_eng': data['name_eng'], 'name_th': data['name_th'],
-                    'api_url': data['api_rul'], 'param1': data['param1'], 'time': data['time']}
-            jsonout[id] = dict
-            return jsonout
-        else:
-            return {"message": "The ID Api is not Exists"}
+# @app.post("/Update")
+# def Update(id: str, name_eng: str, name_th: str, api_url: str, param1: str):
+#     jsonout = {}
+#     for update in connection.db.List.find({'_id': ObjectId(id)}):
+#         #find_id = '{0}'.format(update['_id'])
+#         if update:
+#             data = create(name_eng, name_th, api_url, param1)
+#             connection.db.List.update_one({'_id': ObjectId(id)}, {'$set': {
+#                                           update['name_eng']: name_eng, update['name_th']: name_eng}, update['api_url']: api_url, update['param1']: param1})
+#             data['time'] = datetime.now() + timedelta(hours=7)
+#             data['Operation'] = 'Update'
+#             data['_id'] = id
+#             connection.db.Logs.insert_one(data)
+#             dict = {'Operation': data['Operation'], 'name_eng': data['name_eng'], 'name_th': data['name_th'],
+#                     'api_url': data['api_rul'], 'param1': data['param1'], 'time': data['time']}
+#             jsonout[id] = dict
+#             return jsonout
+#         else:
+#             return {"message": "The ID Api is not Exists"}
 
 
 @app.post("/ReciveInput")
