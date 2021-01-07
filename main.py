@@ -163,7 +163,7 @@ async def Logs():
 
 
 @app.post("/ReciveInput")
-def Recive(text: str):
+def Recive(text):
     # is_exists = False
     data = create(text)
     # if connection.db.List.find(
